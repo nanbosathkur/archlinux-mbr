@@ -1,0 +1,22 @@
+loadkeys trq
+setfont ter-132n
+cfdisk /dev/sda
+mkfs.ext4 /dev/sda1
+mount /dev/sda1 /mnt
+pacstrap /mnt base linux linux-firmware nano sudo grub
+genfstab -U /mnt >> /mnt/etc/fstab
+arch-chroot /mnt
+ln -sf /usr/share/zoneinfo/Europe/Istanbul /etc/localtime
+hwclock --systohc
+nano /etc/locale.gen
+locale-gen
+nano /etc/locale.conf
+nano /etc/vconsole.conf
+nano /etc/hostname
+nano /etc/hosts
+EDITOR=nano visudo
+useradd -mG wheel kvp
+passwd
+passwd kvp
+grub-install --target=i386-pc /dev/sda
+grub-mkconfig -o /boot/grub/grub.cfg
